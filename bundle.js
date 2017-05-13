@@ -58,7 +58,7 @@
 	
 	var _root2 = _interopRequireDefault(_root);
 	
-	var _store = __webpack_require__(270);
+	var _store = __webpack_require__(271);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -21854,7 +21854,7 @@
 	
 	var _reactRouter = __webpack_require__(215);
 	
-	var _app = __webpack_require__(273);
+	var _app = __webpack_require__(270);
 	
 	var _app2 = _interopRequireDefault(_app);
 	
@@ -29388,13 +29388,47 @@
 	  value: true
 	});
 	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(215);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var App = function App(_ref) {
+	  var children = _ref.children;
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement('header', null),
+	    _react2.default.createElement(
+	      'main',
+	      null,
+	      children
+	    )
+	  );
+	};
+	
+	exports.default = App;
+
+/***/ }),
+/* 271 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
 	var _redux = __webpack_require__(192);
 	
-	var _root_reducer = __webpack_require__(271);
+	var _root_reducer = __webpack_require__(272);
 	
 	var _root_reducer2 = _interopRequireDefault(_root_reducer);
 	
-	var _reduxThunk = __webpack_require__(272);
+	var _reduxThunk = __webpack_require__(273);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
@@ -29409,7 +29443,7 @@
 	exports.default = configureStore;
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29425,7 +29459,7 @@
 	exports.default = RootReducer;
 
 /***/ }),
-/* 272 */
+/* 273 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -29451,40 +29485,6 @@
 	thunk.withExtraArgument = createThunkMiddleware;
 	
 	exports['default'] = thunk;
-
-/***/ }),
-/* 273 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(215);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var App = function App(_ref) {
-	  var children = _ref.children;
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement('header', null),
-	    _react2.default.createElement(
-	      'main',
-	      null,
-	      children
-	    )
-	  );
-	};
-	
-	exports.default = App;
 
 /***/ })
 /******/ ]);

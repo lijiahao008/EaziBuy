@@ -4,7 +4,7 @@ module.exports = {
   context: __dirname,
   entry: "./react/EaziBuy.jsx",
   output: {
-    path: path.join(__dirname, 'app', 'assets', 'javascripts'),
+    path: path.join(__dirname),
     filename: "bundle.js"
   },
   module: {
