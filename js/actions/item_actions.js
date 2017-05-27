@@ -9,6 +9,6 @@ export const receiveItems = items => ({
 });
 
 
-export const uploadPicture = (picture) => dispatch => (
-  APIUtil.fetchItems(picture).then(items => dispatch(receiveItems(items)))
+export const uploadPicture = (picture_url) => dispatch => (
+  APIUtil.fetchItems(picture_url).then(items => dispatch(receiveItems(items)))
 );

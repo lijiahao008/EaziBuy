@@ -27,9 +27,11 @@ class UploadPicture extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({submitting: true});
+    this.props.uploadPicture(this.state.picture_url);
   }
 
   onDrop(acceptedFiles, rejectedFiles){
+    console.log(acceptedFiles);
     this.setState({picture: acceptedFiles[0],
     picture_url: acceptedFiles[0].preview})
   }
@@ -64,6 +66,7 @@ class UploadPicture extends React.Component {
         </div>
 
         <div className="panel panel-default">
+          <input type="text" onChange={(e)=>this.setState({picture_url: e.target.value})} />
           <a onClick={this.handleSubmit}>
             <div className="panel-heading">
                 {this.renderSubmitButton()}
