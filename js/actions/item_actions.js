@@ -17,6 +17,7 @@ export const startLoadingEbay = () => ({
 export const searchEbayByUrl = (picture_url) => dispatch => {
   dispatch(startLoadingEbay());
   return APIUtil.fetchLabel(picture_url).then((res) =>
-    { return APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then((items) =>
+    {const keywords = res.responses[0].labelAnnotations.map((label)=>(label.description)).join("%20");
+      return APIUtil.fetchEbayItems(keywords).then((items) =>
       { return dispatch(receiveEbayItems(items))})})
 }

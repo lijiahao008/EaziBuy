@@ -13,7 +13,7 @@ const buildData = (image_url) => {
         "features":[
           {
             "type":"LABEL_DETECTION",
-            "maxResults":1
+            "maxResults": 2
           }
         ]
       }
@@ -37,7 +37,7 @@ export const fetchLabel = (image_url) => {
 export const fetchEbayItems = (key_word) => {
   return $.ajax({
     method: 'GET',
-    url: "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.12.0&SECURITY-APPNAME="+ebay_api_key + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=" + key_word + "&paginationInput.entriesPerPage=10",
+    url: "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.12.0&SECURITY-APPNAME="+ebay_api_key + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=" + key_word + "&paginationInput.entriesPerPage=9",
     dataType: 'jsonp'
   });
 };

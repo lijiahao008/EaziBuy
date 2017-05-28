@@ -29478,7 +29478,10 @@
 	  return function (dispatch) {
 	    dispatch(startLoadingEbay());
 	    return APIUtil.fetchLabel(picture_url).then(function (res) {
-	      return APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then(function (items) {
+	      var keywords = res.responses[0].labelAnnotations.map(function (label) {
+	        return label.description;
+	      }).join("%20");
+	      return APIUtil.fetchEbayItems(keywords).then(function (items) {
 	        return dispatch(receiveEbayItems(items));
 	      });
 	    });
@@ -32295,7 +32298,7 @@
 	      },
 	      "features": [{
 	        "type": "LABEL_DETECTION",
-	        "maxResults": 1
+	        "maxResults": 2
 	      }]
 	    }]
 	  });
@@ -32316,7 +32319,7 @@
 	var fetchEbayItems = exports.fetchEbayItems = function fetchEbayItems(key_word) {
 	  return $.ajax({
 	    method: 'GET',
-	    url: "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.12.0&SECURITY-APPNAME=" + ebay_api_key + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=" + key_word + "&paginationInput.entriesPerPage=10",
+	    url: "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.12.0&SECURITY-APPNAME=" + ebay_api_key + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=" + key_word + "&paginationInput.entriesPerPage=9",
 	    dataType: 'jsonp'
 	  });
 	};
