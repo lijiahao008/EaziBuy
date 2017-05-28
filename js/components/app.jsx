@@ -1,14 +1,15 @@
-
 import React from 'react';
 import { Link } from 'react-router';
-import UploadPicture from './upload_picture';
+import SearchByUrl from './search_by_url';
+import EbayItems from './ebay_items';
 
 const App = ({ children }) => (
   <div>
     <header>
     </header>
     <main>
-      <UploadPicture />
+      <SearchByUrl />
+      <EbayItems />
       {children}
     </main>
   </div>

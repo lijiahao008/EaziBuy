@@ -1,14 +1,16 @@
 import * as APIUtil from '../util/item_api_util'
 
-export const RECEIVE_ITEMS = "RECEIVE_ITEMS";
+export const RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
 
 
-export const receiveItems = items => ({
-  type: RECEIVE_ITEMS,
+export const receiveEbayItems = items => ({
+  type: RECEIVE_EBAY_ITEMS,
   items
 });
 
 
-export const uploadPicture = (picture_url) => dispatch => (
-  APIUtil.fetchItems(picture_url).then(items => dispatch(receiveItems(items)))
-);
+export const searchEbayByUrl = (picture_url) => dispatch => (
+  APIUtil.fetchLabel(picture_url).then((res) =>
+    APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then((items) =>
+      dispatch(receiveEbayItems(items))))
+)

@@ -27,7 +27,7 @@ class UploadPicture extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.setState({submitting: true});
-    this.props.uploadPicture(this.state.picture_url);
+    this.props.searchEbayByUrl(this.state.picture_url);
   }
 
   onDrop(acceptedFiles, rejectedFiles){
@@ -81,8 +81,9 @@ class UploadPicture extends React.Component {
   }
 }
 
+
 const mapDispatchToProps = dispatch => ({
-  uploadPicture: (picture) => dispatch(uploadPicture(picture))
+  searchEbayByUrl: (picture_url) => dispatch(searchEbayByUrl(picture_url))
 });
 
 export default connect(
