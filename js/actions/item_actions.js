@@ -11,6 +11,6 @@ export const receiveEbayItems = items => ({
 
 export const searchEbayByUrl = (picture_url) => dispatch => (
   APIUtil.fetchLabel(picture_url).then((res) =>
-    APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then((items) =>
-      dispatch(receiveEbayItems(items))))
+    {debugger; return APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then((items) =>
+      {debugger; return dispatch(receiveEbayItems(items))})})
 )

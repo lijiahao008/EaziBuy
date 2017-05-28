@@ -1,22 +1,17 @@
 import React from 'react';
 import { Link, hashHistory, withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import Dropzone from 'react-dropzone';
-import { uploadPicture } from '../actions/item_actions';
+import { searchEbayByUrl } from '../actions/item_actions';
 
 
-class UploadPicture extends React.Component {
+class SearchByUrl extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      picture_url: "",
-      picture: null,
-      submitting: false
+      picture_url: ""
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.onDrop = this.onDrop.bind(this);
-    this.renderSubmitButton = this.renderSubmitButton.bind(this);
   }
 
   update(field) {
@@ -26,55 +21,23 @@ class UploadPicture extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({submitting: true});
     this.props.searchEbayByUrl(this.state.picture_url);
   }
-
-  onDrop(acceptedFiles, rejectedFiles){
-    console.log(acceptedFiles);
-    this.setState({picture: acceptedFiles[0],
-    picture_url: acceptedFiles[0].preview})
-  }
-
-  renderSubmitButton(){
-    if (!this.state.submitting) {
-      return  <h4 className="panel-title">
-                <i className="fa fa-check" aria-hidden="true"></i> Finish
-              </h4>;
-    }
-    else {
-      return  <h4 className="panel-title">
-                <div className="cssload-container">
-                  <div className="loading6"></div>
-                </div>
-              </h4>;
-    }
-  }
-
 
   render () {
 
     return (
-
-      <div className="row">
-        <div className="form-group">
-          <Dropzone
-            onDrop={this.onDrop}
-            className="menu-dropzone">
-            <p>Drop some files here, or click to select files to upload.</p>
-          </Dropzone>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <input type="text" onChange={this.update('picture_url')} />
+            <a onClick={this.handleSubmit}>Submit</a>
+          </div>
         </div>
-
-        <div className="panel panel-default">
-          <input type="text" onChange={(e)=>this.setState({picture_url: e.target.value})} />
-          <a onClick={this.handleSubmit}>
-            <div className="panel-heading">
-                {this.renderSubmitButton()}
-            </div>
-          </a>
-        </div>
-        <div className="col-md-6 text-center">
-          <a><img src={this.state.picture_url} width="400" /></a>
+        <div className="row">
+          <div className="col-md-6 text-center">
+            <img src={this.state.picture_url} width="400" />
+          </div>
         </div>
       </div>
     );
@@ -89,4 +52,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   null,
   mapDispatchToProps
-)(UploadPicture);
+)(SearchByUrl);
