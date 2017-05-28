@@ -34,7 +34,7 @@ class SearchByUrl extends React.Component {
         </div>
         <div className="btn btn-primary btn-block submit-btn" onClick={this.handleSubmit}>Submit</div>
         <div className="row text-center">
-          <img src={this.state.picture_url} width="400" />
+          <img src={this.state.picture_url} />
         </div>
       </div>
     );

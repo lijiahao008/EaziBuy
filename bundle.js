@@ -32478,7 +32478,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'row text-center' },
-	          _react2.default.createElement('img', { src: this.state.picture_url, width: '400' })
+	          _react2.default.createElement('img', { src: this.state.picture_url })
 	        )
 	      );
 	    }

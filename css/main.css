@@ -1,9 +1,9 @@
 body {
-  background: #cfcfd1;
+  background: #efefef;
 }
 
 .left {
-  margin: 50% auto;
+  margin: 25% auto;
   position: relative;
 }
 
@@ -21,7 +21,9 @@ body {
 }
 
 .left img {
-  margin: 50px auto;
+  margin: 15% auto;
+  height: 100%;
+  width: 80%;
 }
 
 .submit-btn {
@@ -36,4 +38,12 @@ body {
   margin: 50px auto;
   height: 90vh;
   overflow: scroll;
+}
+
+.total-results {
+  padding: 15px 0px;
+}
+
+.total-results a {
+  float: right;
 }
