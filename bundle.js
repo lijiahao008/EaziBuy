@@ -29414,9 +29414,25 @@
 	    _react2.default.createElement(
 	      'main',
 	      null,
-	      _react2.default.createElement(_search_by_url2.default, null),
-	      _react2.default.createElement(_ebay_items_container2.default, null),
-	      children
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-6' },
+	            _react2.default.createElement(_search_by_url2.default, null)
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'col-md-6' },
+	            _react2.default.createElement(_ebay_items_container2.default, null)
+	          ),
+	          children
+	        )
+	      )
 	    )
 	  );
 	};
@@ -32321,55 +32337,54 @@
 	    { className: "ebay-items" },
 	    _react2.default.createElement(
 	      "div",
-	      { className: "ebay-url" },
-	      _react2.default.createElement(
-	        "span",
-	        null,
-	        "Browse on Ebay:"
-	      ),
-	      " ",
-	      _react2.default.createElement("a", { href: ebayUrl })
-	    ),
-	    _react2.default.createElement(
-	      "div",
 	      { className: "total-results" },
 	      _react2.default.createElement(
 	        "span",
 	        null,
-	        "Results found:"
+	        "Results found: ",
+	        totalResults
 	      ),
-	      totalResults
+	      _react2.default.createElement(
+	        "a",
+	        { className: "btn btn-primary btn-sm", href: ebayUrl },
+	        "Browse on Ebay"
+	      )
 	    ),
-	    items.map(function (item) {
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "single-item", key: item.itemId[0] },
-	        _react2.default.createElement(
-	          "a",
-	          { href: item.viewItemURL[0] },
+	    _react2.default.createElement(
+	      "div",
+	      { className: "card-columns" },
+	      items.map(function (item, idx) {
+	        return _react2.default.createElement(
+	          "div",
+	          { className: "card", key: idx },
+	          _react2.default.createElement("img", { className: "card-img-top", src: item.galleryURL[0] }),
 	          _react2.default.createElement(
 	            "div",
-	            { className: "item-image" },
-	            _react2.default.createElement("img", { src: item.galleryURL[0] })
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            { className: "item-title" },
-	            item.title[0]
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            { className: "item-location" },
-	            item.location[0]
-	          ),
-	          _react2.default.createElement(
-	            "div",
-	            { className: "item-condition" },
-	            item.condition ? item.condition[0].conditionDisplayName[0] : ""
+	            { className: "card-block" },
+	            _react2.default.createElement(
+	              "div",
+	              { className: "card-title" },
+	              item.title[0]
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "item-location" },
+	              item.location[0]
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              { className: "item-condition" },
+	              item.condition ? item.condition[0].conditionDisplayName[0] : ""
+	            ),
+	            _react2.default.createElement(
+	              "a",
+	              { className: "btn btn-primary", href: item.viewItemURL[0] },
+	              "View On Ebay"
+	            )
 	          )
-	        )
-	      );
-	    })
+	        );
+	      })
+	    )
 	  );
 	};
 	
@@ -32444,29 +32459,26 @@
 	
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'container' },
+	        { className: 'container left' },
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-md-6' },
-	            _react2.default.createElement('input', { type: 'text', onChange: this.update('picture_url') }),
-	            _react2.default.createElement(
-	              'a',
-	              { onClick: this.handleSubmit },
-	              'Submit'
-	            )
-	          )
+	          { className: 'prompt' },
+	          'Please enter the url of an image:'
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-md-6 text-center' },
-	            _react2.default.createElement('img', { src: this.state.picture_url, width: '400' })
-	          )
+	          null,
+	          _react2.default.createElement('input', { type: 'text', required: true, onChange: this.update('picture_url') })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'btn btn-primary btn-block submit-btn', onClick: this.handleSubmit },
+	          'Submit'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row text-center' },
+	          _react2.default.createElement('img', { src: this.state.picture_url, width: '400' })
 	        )
 	      );
 	    }

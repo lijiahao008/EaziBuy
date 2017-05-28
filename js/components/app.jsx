@@ -8,9 +8,17 @@ const App = ({ children }) => (
     <header>
     </header>
     <main>
-      <SearchByUrl />
-      <EbayItemsContainer />
-      {children}
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6">
+            <SearchByUrl />
+          </div>
+          <div className="col-md-6">
+            <EbayItemsContainer />
+          </div>
+          {children}
+        </div>
+      </div>
     </main>
   </div>
 );

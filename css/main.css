@@ -1,0 +1,39 @@
+body {
+  background: #cfcfd1;
+}
+
+.left {
+  margin: 50% auto;
+  position: relative;
+}
+
+.prompt {
+  font-style: italic;
+}
+
+.left input{
+  width: 100%;
+  margin: 10px 0px;
+  border: none;
+  border-bottom: 1px solid lightgrey;
+  outline: none;
+  background: transparent;
+}
+
+.left img {
+  margin: 50px auto;
+}
+
+.submit-btn {
+  color: white !important;
+}
+
+.submit-btn:hover {
+  cursor: pointer;
+}
+
+.ebay-items {
+  margin: 50px auto;
+  height: 90vh;
+  overflow: scroll;
+}

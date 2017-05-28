@@ -27,17 +27,14 @@ class SearchByUrl extends React.Component {
   render () {
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6">
-            <input type="text" onChange={this.update('picture_url')} />
-            <a onClick={this.handleSubmit}>Submit</a>
-          </div>
+      <div className="container left">
+        <div className="prompt">Please enter the url of an image:</div>
+        <div>
+          <input type="text" required onChange={this.update('picture_url')} />
         </div>
-        <div className="row">
-          <div className="col-md-6 text-center">
-            <img src={this.state.picture_url} width="400" />
-          </div>
+        <div className="btn btn-primary btn-block submit-btn" onClick={this.handleSubmit}>Submit</div>
+        <div className="row text-center">
+          <img src={this.state.picture_url} width="400" />
         </div>
       </div>
     );
