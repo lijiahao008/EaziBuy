@@ -32369,7 +32369,7 @@
 	      ),
 	      _react2.default.createElement(
 	        "a",
-	        { className: "btn btn-primary btn-sm", href: ebayUrl },
+	        { className: "btn btn-primary btn-sm", target: "_blank", href: ebayUrl },
 	        "Browse on Ebay"
 	      )
 	    ),
@@ -32413,7 +32413,7 @@
 	            ),
 	            _react2.default.createElement(
 	              "a",
-	              { className: "btn btn-primary", href: item.viewItemURL[0] },
+	              { className: "btn btn-primary btn-block", target: "_blank", href: item.viewItemURL[0] },
 	              "View On Ebay"
 	            )
 	          )

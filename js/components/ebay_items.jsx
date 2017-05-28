@@ -14,7 +14,7 @@ const EbayItems = ({ ebayUrl, totalResults, items, loading }) => {
     <div className="ebay-items">
       <div className="total-results">
         <span>Results found: {totalResults}</span>
-        <a className="btn btn-primary btn-sm" href={ebayUrl}>Browse on Ebay</a>
+        <a className="btn btn-primary btn-sm" target="_blank" href={ebayUrl}>Browse on Ebay</a>
       </div>
       <div className="card-columns">
         {items.map((item, idx)=>{
@@ -26,7 +26,7 @@ const EbayItems = ({ ebayUrl, totalResults, items, loading }) => {
                 <div className="card-title">{title}</div>
                 <div className="item-location"><span>Location: </span>{item.location[0]}</div>
                 <div className="item-condition"><span>Condition: </span>{condition}</div>
-                <a className="btn btn-primary" href={item.viewItemURL[0]}>View On Ebay</a>
+                <a className="btn btn-primary btn-block" target="_blank" href={item.viewItemURL[0]}>View On Ebay</a>
             </div>
           </div>
         })}
