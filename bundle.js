@@ -32287,7 +32287,7 @@
 	var fetchEbayItems = exports.fetchEbayItems = function fetchEbayItems(key_word) {
 	  return $.ajax({
 	    method: 'GET',
-	    url: "http://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.12.0&SECURITY-APPNAME=" + ebay_api_key + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=" + key_word + "&paginationInput.entriesPerPage=10",
+	    url: "https://svcs.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.12.0&SECURITY-APPNAME=" + ebay_api_key + "&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=" + key_word + "&paginationInput.entriesPerPage=10",
 	    dataType: 'jsonp'
 	  });
 	};
