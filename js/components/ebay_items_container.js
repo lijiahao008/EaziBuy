@@ -17,6 +17,7 @@ const mapStateToProps = state => {
     items = state.items.ebayItems.searchResult[0].item;
   }
     return {
+      loading: state.loading.loadingEbay,
       ebayUrl,
       totalResults,
       items

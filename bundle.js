@@ -29450,7 +29450,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.searchEbayByUrl = exports.receiveEbayItems = exports.RECEIVE_EBAY_ITEMS = undefined;
+	exports.searchEbayByUrl = exports.startLoadingEbay = exports.receiveEbayItems = exports.START_LOADING_EBAY = exports.RECEIVE_EBAY_ITEMS = undefined;
 	
 	var _item_api_util = __webpack_require__(363);
 	
@@ -29459,6 +29459,7 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	var RECEIVE_EBAY_ITEMS = exports.RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
+	var START_LOADING_EBAY = exports.START_LOADING_EBAY = "START_LOADING_EBAY";
 	
 	var receiveEbayItems = exports.receiveEbayItems = function receiveEbayItems(items) {
 	  return {
@@ -29467,8 +29468,15 @@
 	  };
 	};
 	
+	var startLoadingEbay = exports.startLoadingEbay = function startLoadingEbay() {
+	  return {
+	    type: START_LOADING_EBAY
+	  };
+	};
+	
 	var searchEbayByUrl = exports.searchEbayByUrl = function searchEbayByUrl(picture_url) {
 	  return function (dispatch) {
+	    dispatch(startLoadingEbay());
 	    return APIUtil.fetchLabel(picture_url).then(function (res) {
 	      return APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then(function (items) {
 	        return dispatch(receiveEbayItems(items));
@@ -29523,10 +29531,15 @@
 	
 	var _items_reducer2 = _interopRequireDefault(_items_reducer);
 	
+	var _loading_reducer = __webpack_require__(367);
+	
+	var _loading_reducer2 = _interopRequireDefault(_loading_reducer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var RootReducer = (0, _redux.combineReducers)({
-	    items: _items_reducer2.default
+	    items: _items_reducer2.default,
+	    loading: _loading_reducer2.default
 	});
 	
 	exports.default = RootReducer;
@@ -32327,11 +32340,21 @@
 	var EbayItems = function EbayItems(_ref) {
 	  var ebayUrl = _ref.ebayUrl,
 	      totalResults = _ref.totalResults,
-	      items = _ref.items;
+	      items = _ref.items,
+	      loading = _ref.loading;
+	
+	  if (loading) {
+	    return _react2.default.createElement(
+	      "div",
+	      null,
+	      "Loading..."
+	    );
+	  }
 	
 	  if (totalResults === 0) {
 	    return _react2.default.createElement("div", null);
 	  }
+	
 	  return _react2.default.createElement(
 	    "div",
 	    { className: "ebay-items" },
@@ -32477,8 +32500,8 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row text-center' },
-	          _react2.default.createElement('img', { src: this.state.picture_url })
+	          { className: 'row' },
+	          this.state.picture_url === "" ? "" : _react2.default.createElement('img', { src: this.state.picture_url })
 	        )
 	      );
 	    }
@@ -32533,6 +32556,7 @@
 	    items = state.items.ebayItems.searchResult[0].item;
 	  }
 	  return {
+	    loading: state.loading.loadingEbay,
 	    ebayUrl: ebayUrl,
 	    totalResults: totalResults,
 	    items: items
@@ -32540,6 +32564,41 @@
 	};
 	
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(_ebay_items2.default);
+
+/***/ }),
+/* 367 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _item_actions = __webpack_require__(273);
+	
+	var _merge = __webpack_require__(277);
+	
+	var _merge2 = _interopRequireDefault(_merge);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var LoadingReducer = function LoadingReducer() {
+	  var oldState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	  var action = arguments[1];
+	
+	  Object.freeze(oldState);
+	  switch (action.type) {
+	    case _item_actions.START_LOADING_EBAY:
+	      return Object.assign({}, { loadingEbay: true });
+	    case _item_actions.RECEIVE_EBAY_ITEMS:
+	      return Object.assign({}, { loadingEbay: false });
+	    default:
+	      return oldState;
+	  }
+	};
+	
+	exports.default = LoadingReducer;
 
 /***/ })
 /******/ ]);

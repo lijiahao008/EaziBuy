@@ -1,10 +1,15 @@
 import React from 'react';
 
 
-const EbayItems = ({ ebayUrl, totalResults, items }) => {
+const EbayItems = ({ ebayUrl, totalResults, items, loading }) => {
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   if (totalResults === 0) {
     return <div></div>;
   }
+
   return(
     <div className="ebay-items">
       <div className="total-results">

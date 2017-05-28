@@ -33,8 +33,8 @@ class SearchByUrl extends React.Component {
           <input type="text" required onChange={this.update('picture_url')} />
         </div>
         <div className="btn btn-primary btn-block submit-btn" onClick={this.handleSubmit}>Submit</div>
-        <div className="row text-center">
-          <img src={this.state.picture_url} />
+        <div className="row">
+          {this.state.picture_url === "" ? "" : <img src={this.state.picture_url} />}
         </div>
       </div>
     );
