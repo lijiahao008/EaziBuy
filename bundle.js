@@ -29450,7 +29450,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.searchEbayByUrl = exports.startLoadingEbay = exports.receiveEbayItems = exports.START_LOADING_EBAY = exports.RECEIVE_EBAY_ITEMS = undefined;
+	exports.searchEbayByUrl = exports.startLoadingEbay = exports.receiveEbayItemsError = exports.receiveEbayItems = exports.START_LOADING_EBAY = exports.RECEIVE_EBAY_ITEMS_ERRORS = exports.RECEIVE_EBAY_ITEMS = undefined;
 	
 	var _item_api_util = __webpack_require__(363);
 	
@@ -29459,12 +29459,20 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	var RECEIVE_EBAY_ITEMS = exports.RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
+	var RECEIVE_EBAY_ITEMS_ERRORS = exports.RECEIVE_EBAY_ITEMS_ERRORS = "RECEIVE_EBAY_ITEMS_ERRORS";
 	var START_LOADING_EBAY = exports.START_LOADING_EBAY = "START_LOADING_EBAY";
 	
 	var receiveEbayItems = exports.receiveEbayItems = function receiveEbayItems(items) {
 	  return {
 	    type: RECEIVE_EBAY_ITEMS,
 	    items: items
+	  };
+	};
+	
+	var receiveEbayItemsError = exports.receiveEbayItemsError = function receiveEbayItemsError(errors) {
+	  return {
+	    type: RECEIVE_EBAY_ITEMS_ERRORS,
+	    errors: errors
 	  };
 	};
 	
@@ -32416,7 +32424,7 @@
 	            ),
 	            _react2.default.createElement(
 	              "a",
-	              { className: "btn btn-primary btn-block", target: "_blank", href: item.viewItemURL[0] },
+	              { className: "btn btn-primary btn-block view-on-ebay", target: "_blank", href: item.viewItemURL[0] },
 	              "View On Ebay"
 	            )
 	          )
@@ -32515,8 +32523,9 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
-	          this.state.picture_url === "" ? "" : _react2.default.createElement('img', { src: this.state.picture_url })
+	          { className: 'row search-image' },
+	          this.state.picture_url === "" ? "" : _react2.default.createElement('img', { src: this.state.picture_url }),
+	          this.props.loading ? _react2.default.createElement('div', { className: 'loader image-loader' }) : ""
 	        )
 	      );
 	    }
@@ -32524,6 +32533,12 @@
 	
 	  return SearchByUrl;
 	}(_react2.default.Component);
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    loading: state.loading.loadingEbay
+	  };
+	};
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
@@ -32533,7 +32548,7 @@
 	  };
 	};
 	
-	exports.default = (0, _reactRedux.connect)(null, mapDispatchToProps)(SearchByUrl);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(SearchByUrl);
 
 /***/ }),
 /* 366 */

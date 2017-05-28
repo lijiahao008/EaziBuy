@@ -20,9 +20,14 @@ body {
   background: transparent;
 }
 
+.search-image {
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
+
 .left img {
-  margin: 15% auto;
-  height: 100%;
+  position: relative;
   width: 80%;
 }
 
@@ -37,6 +42,7 @@ body {
 .ebay-items {
   margin: 50px auto;
   height: 90vh;
+  padding: 10px;
   overflow: scroll;
 }
 
@@ -64,6 +70,10 @@ body {
 
 .item-location span, .item-condition span {
   font-weight: bold;
+}
+
+.view-on-ebay {
+  font-size: 13px;
 }
 
 .loader {
@@ -128,4 +138,14 @@ body {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.image-loader {
+  position: absolute;
+  top: 12%;
+  z-index: 3;
+}
+
+.image-loader:after {
+  background: transparent;
 }

@@ -33,20 +33,24 @@ class SearchByUrl extends React.Component {
           <input type="text" required onChange={this.update('picture_url')} />
         </div>
         <div className="btn btn-primary btn-block submit-btn" onClick={this.handleSubmit}>Submit</div>
-        <div className="row">
+        <div className="row search-image">
           {this.state.picture_url === "" ? "" : <img src={this.state.picture_url} />}
+          {this.props.loading ? <div className="loader image-loader"></div> : ""}
         </div>
       </div>
     );
   }
 }
 
+const mapStateToProps = (state) => ({
+  loading: state.loading.loadingEbay
+});
 
 const mapDispatchToProps = dispatch => ({
   searchEbayByUrl: (picture_url) => dispatch(searchEbayByUrl(picture_url))
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SearchByUrl);
