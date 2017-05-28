@@ -32346,7 +32346,7 @@
 	  if (loading) {
 	    return _react2.default.createElement(
 	      "div",
-	      null,
+	      { className: "loader" },
 	      "Loading..."
 	    );
 	  }
@@ -32377,6 +32377,8 @@
 	      "div",
 	      { className: "card-columns" },
 	      items.map(function (item, idx) {
+	        var title = item.title[0].length > 20 ? item.title[0].slice(0, 20) + "..." : item.title[0];
+	        var condition = item.condition ? item.condition[0].conditionDisplayName[0] : "Unknown";
 	        return _react2.default.createElement(
 	          "div",
 	          { className: "card", key: idx },
@@ -32387,17 +32389,27 @@
 	            _react2.default.createElement(
 	              "div",
 	              { className: "card-title" },
-	              item.title[0]
+	              title
 	            ),
 	            _react2.default.createElement(
 	              "div",
 	              { className: "item-location" },
+	              _react2.default.createElement(
+	                "span",
+	                null,
+	                "Location: "
+	              ),
 	              item.location[0]
 	            ),
 	            _react2.default.createElement(
 	              "div",
 	              { className: "item-condition" },
-	              item.condition ? item.condition[0].conditionDisplayName[0] : ""
+	              _react2.default.createElement(
+	                "span",
+	                null,
+	                "Condition: "
+	              ),
+	              condition
 	            ),
 	            _react2.default.createElement(
 	              "a",

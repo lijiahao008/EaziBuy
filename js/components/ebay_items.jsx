@@ -3,7 +3,7 @@ import React from 'react';
 
 const EbayItems = ({ ebayUrl, totalResults, items, loading }) => {
   if (loading) {
-    return <div>Loading...</div>
+    return <div className="loader">Loading...</div>
   }
 
   if (totalResults === 0) {
@@ -18,12 +18,14 @@ const EbayItems = ({ ebayUrl, totalResults, items, loading }) => {
       </div>
       <div className="card-columns">
         {items.map((item, idx)=>{
+          let title = item.title[0].length > 20 ? item.title[0].slice(0, 20) + "..." : item.title[0];
+          let condition = item.condition ? item.condition[0].conditionDisplayName[0] : "Unknown";
           return <div className="card" key={idx}>
               <img className="card-img-top" src={item.galleryURL[0]} />
               <div className="card-block">
-                <div className="card-title">{item.title[0]}</div>
-                <div className="item-location">{item.location[0]}</div>
-                <div className="item-condition">{item.condition ? item.condition[0].conditionDisplayName[0] : ""}</div>
+                <div className="card-title">{title}</div>
+                <div className="item-location"><span>Location: </span>{item.location[0]}</div>
+                <div className="item-condition"><span>Condition: </span>{condition}</div>
                 <a className="btn btn-primary" href={item.viewItemURL[0]}>View On Ebay</a>
             </div>
           </div>
