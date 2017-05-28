@@ -32520,7 +32520,6 @@
 	    totalResults = state.items.ebayItems.paginationOutput[0].totalEntries[0];
 	    items = state.items.ebayItems.searchResult[0].item;
 	  }
-	  debugger;
 	  return {
 	    ebayUrl: ebayUrl,
 	    totalResults: totalResults,
