@@ -29454,8 +29454,8 @@
 	var searchEbayByUrl = exports.searchEbayByUrl = function searchEbayByUrl(picture_url) {
 	  return function (dispatch) {
 	    return APIUtil.fetchLabel(picture_url).then(function (res) {
-	      debugger;return APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then(function (items) {
-	        debugger;return dispatch(receiveEbayItems(items));
+	      return APIUtil.fetchEbayItems(res.responses[0].labelAnnotations[0].description).then(function (items) {
+	        return dispatch(receiveEbayItems(items));
 	      });
 	    });
 	  };
