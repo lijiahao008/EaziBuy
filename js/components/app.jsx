@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import SearchByUrl from './search_by_url';
-import EbayItemsContainer from './ebay_items_container';
+import Results from './results';
 
 const App = ({ children }) => (
   <div>
@@ -14,7 +14,7 @@ const App = ({ children }) => (
             <SearchByUrl />
           </div>
           <div className="col-md-6">
-            <EbayItemsContainer />
+            <Results />
           </div>
           {children}
         </div>

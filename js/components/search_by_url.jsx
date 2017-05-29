@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, hashHistory, withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { searchEbayByUrl } from '../actions/item_actions';
+import { getLabels } from '../actions/item_actions';
 
 
 class SearchByUrl extends React.Component {
@@ -21,7 +21,7 @@ class SearchByUrl extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.searchEbayByUrl(this.state.picture_url);
+    this.props.getLabels(this.state.picture_url);
   }
 
   render () {
@@ -43,11 +43,11 @@ class SearchByUrl extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.loading.loadingEbay
+  loading: state.loading.loadingImage
 });
 
 const mapDispatchToProps = dispatch => ({
-  searchEbayByUrl: (picture_url) => dispatch(searchEbayByUrl(picture_url))
+  getLabels: (picture_url) => dispatch(getLabels(picture_url))
 });
 
 export default connect(

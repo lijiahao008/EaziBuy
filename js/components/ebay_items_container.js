@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import EbayItems from './ebay_items'
+import EbayItems from './ebay_items';
+import {getEbayItems} from '../actions/item_actions';
 
 const mapStateToProps = state => {
   let ebayUrl;
   let totalResults;
   let items;
-  if (state.items.ebayItems === undefined) {
+  if (jQuery.isEmptyObject(state.items.ebayItems)) {
     ebayUrl = "";
     totalResults = 0;
     items = [];
@@ -20,11 +21,16 @@ const mapStateToProps = state => {
       loading: state.loading.loadingEbay,
       ebayUrl,
       totalResults,
-      items
+      items,
+      keywords: state.items.labels[0].description + (state.items.labels[1] ? " "+state.items.labels[1].description : "")
     }
 };
 
+const mapDispatchToProps = dispatch => ({
+  getEbayItems: (keywords) => dispatch(getEbayItems(keywords))
+});
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(EbayItems);

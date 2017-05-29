@@ -39,8 +39,28 @@ body {
   cursor: pointer;
 }
 
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.tab-items {
+  width: 50%;
+  border: 1px solid lightgrey;
+  border-bottom: none;
+  border-radius: 5px;
+  text-align: center;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.tab-items:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .ebay-items {
-  margin: 50px auto;
   height: 90vh;
   padding: 10px;
   overflow: scroll;

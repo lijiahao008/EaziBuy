@@ -29399,9 +29399,9 @@
 	
 	var _search_by_url2 = _interopRequireDefault(_search_by_url);
 	
-	var _ebay_items_container = __webpack_require__(366);
+	var _results = __webpack_require__(368);
 	
-	var _ebay_items_container2 = _interopRequireDefault(_ebay_items_container);
+	var _results2 = _interopRequireDefault(_results);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -29428,7 +29428,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'col-md-6' },
-	            _react2.default.createElement(_ebay_items_container2.default, null)
+	            _react2.default.createElement(_results2.default, null)
 	          ),
 	          children
 	        )
@@ -29450,7 +29450,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.searchEbayByUrl = exports.startLoadingEbay = exports.receiveEbayItemsError = exports.receiveEbayItems = exports.START_LOADING_EBAY = exports.RECEIVE_EBAY_ITEMS_ERRORS = exports.RECEIVE_EBAY_ITEMS = undefined;
+	exports.getEbayItems = exports.getLabels = exports.startLoadingImage = exports.startLoadingEbay = exports.receiveImageError = exports.receiveImageLabels = exports.receiveEbayItems = exports.START_LOADING_IMAGE = exports.START_LOADING_EBAY = exports.RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_LABELS = exports.RECEIVE_EBAY_ITEMS = undefined;
 	
 	var _item_api_util = __webpack_require__(363);
 	
@@ -29459,8 +29459,10 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	var RECEIVE_EBAY_ITEMS = exports.RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
-	var RECEIVE_EBAY_ITEMS_ERRORS = exports.RECEIVE_EBAY_ITEMS_ERRORS = "RECEIVE_EBAY_ITEMS_ERRORS";
+	var RECEIVE_IMAGE_LABELS = exports.RECEIVE_IMAGE_LABELS = "RECEIVE_IMAGE_LABELS";
+	var RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_ERROR = "RECEIVE_IMAGE_ERROR";
 	var START_LOADING_EBAY = exports.START_LOADING_EBAY = "START_LOADING_EBAY";
+	var START_LOADING_IMAGE = exports.START_LOADING_IMAGE = "START_LOADING_IMAGE";
 	
 	var receiveEbayItems = exports.receiveEbayItems = function receiveEbayItems(items) {
 	  return {
@@ -29469,10 +29471,17 @@
 	  };
 	};
 	
-	var receiveEbayItemsError = exports.receiveEbayItemsError = function receiveEbayItemsError(errors) {
+	var receiveImageLabels = exports.receiveImageLabels = function receiveImageLabels(labels) {
 	  return {
-	    type: RECEIVE_EBAY_ITEMS_ERRORS,
-	    errors: errors
+	    type: RECEIVE_IMAGE_LABELS,
+	    labels: labels
+	  };
+	};
+	
+	var receiveImageError = exports.receiveImageError = function receiveImageError(error) {
+	  return {
+	    type: RECEIVE_IMAGE_ERROR,
+	    error: error
 	  };
 	};
 	
@@ -29482,16 +29491,31 @@
 	  };
 	};
 	
-	var searchEbayByUrl = exports.searchEbayByUrl = function searchEbayByUrl(picture_url) {
+	var startLoadingImage = exports.startLoadingImage = function startLoadingImage() {
+	  return {
+	    type: START_LOADING_IMAGE
+	  };
+	};
+	
+	var getLabels = exports.getLabels = function getLabels(picture_url) {
+	  return function (dispatch) {
+	    dispatch(startLoadingImage());
+	    return APIUtil.fetchLabel(picture_url).then(function (res) {
+	      if (res.responses[0].labelAnnotations) {
+	        return dispatch(receiveImageLabels(res.responses[0].labelAnnotations));
+	      } else {
+	        var error = res.responses[0].error.message;
+	        return dispatch(receiveImageError(error));
+	      }
+	    });
+	  };
+	};
+	
+	var getEbayItems = exports.getEbayItems = function getEbayItems(keywords) {
 	  return function (dispatch) {
 	    dispatch(startLoadingEbay());
-	    return APIUtil.fetchLabel(picture_url).then(function (res) {
-	      var keywords = res.responses[0].labelAnnotations.map(function (label) {
-	        return label.description;
-	      }).join("%20");
-	      return APIUtil.fetchEbayItems(keywords).then(function (items) {
-	        return dispatch(receiveEbayItems(items));
-	      });
+	    return APIUtil.fetchEbayItems(keywords).then(function (items) {
+	      return dispatch(receiveEbayItems(items));
 	    });
 	  };
 	};
@@ -29573,20 +29597,32 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var SearchReducer = function SearchReducer() {
-	  var oldState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+	var initialState = {
+	  labels: {},
+	  ebayItems: {}
+	};
+	
+	var ItemsReducer = function ItemsReducer() {
+	  var oldState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
 	  var action = arguments[1];
 	
 	  Object.freeze(oldState);
+	  var newState = (0, _merge2.default)({}, oldState);
 	  switch (action.type) {
+	    case _item_actions.RECEIVE_IMAGE_LABELS:
+	      newState.labels = action.labels;
+	      return Object.assign({}, newState);
+	    case _item_actions.RECEIVE_IMAGE_ERRORS:
+	      return Object.assign({}, { error: action.error });
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
-	      return (0, _merge2.default)({}, { ebayItems: action.items.findItemsByKeywordsResponse[0] });
+	      newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
+	      return Object.assign({}, newState);
 	    default:
 	      return oldState;
 	  }
 	};
 	
-	exports.default = SearchReducer;
+	exports.default = ItemsReducer;
 
 /***/ }),
 /* 277 */
@@ -32306,7 +32342,7 @@
 	      },
 	      "features": [{
 	        "type": "LABEL_DETECTION",
-	        "maxResults": 2
+	        "maxResults": 5
 	      }]
 	    }]
 	  });
@@ -32342,97 +32378,133 @@
 	  value: true
 	});
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var EbayItems = function EbayItems(_ref) {
-	  var ebayUrl = _ref.ebayUrl,
-	      totalResults = _ref.totalResults,
-	      items = _ref.items,
-	      loading = _ref.loading;
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	  if (loading) {
-	    return _react2.default.createElement(
-	      "div",
-	      { className: "loader" },
-	      "Loading..."
-	    );
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var EbayItems = function (_React$Component) {
+	  _inherits(EbayItems, _React$Component);
+	
+	  function EbayItems(props) {
+	    _classCallCheck(this, EbayItems);
+	
+	    return _possibleConstructorReturn(this, (EbayItems.__proto__ || Object.getPrototypeOf(EbayItems)).call(this, props));
 	  }
 	
-	  if (totalResults === 0) {
-	    return _react2.default.createElement("div", null);
-	  }
-	
-	  return _react2.default.createElement(
-	    "div",
-	    { className: "ebay-items" },
-	    _react2.default.createElement(
-	      "div",
-	      { className: "total-results" },
-	      _react2.default.createElement(
-	        "span",
-	        null,
-	        "Results found: ",
-	        totalResults
-	      ),
-	      _react2.default.createElement(
-	        "a",
-	        { className: "btn btn-primary btn-sm", target: "_blank", href: ebayUrl },
-	        "Browse on Ebay"
-	      )
-	    ),
-	    _react2.default.createElement(
-	      "div",
-	      { className: "card-columns" },
-	      items.map(function (item, idx) {
-	        var title = item.title[0].length > 20 ? item.title[0].slice(0, 20) + "..." : item.title[0];
-	        var condition = item.condition ? item.condition[0].conditionDisplayName[0] : "Unknown";
+	  _createClass(EbayItems, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      this.props.getEbayItems(this.props.keywords);
+	    }
+	  }, {
+	    key: "componentDidUpdate",
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (prevProps.keywords !== this.props.keywords) {
+	        this.props.getEbayItems(this.props.keywords);
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      if (this.props.loading) {
 	        return _react2.default.createElement(
 	          "div",
-	          { className: "card", key: idx },
-	          _react2.default.createElement("img", { className: "card-img-top", src: item.galleryURL[0] }),
-	          _react2.default.createElement(
-	            "div",
-	            { className: "card-block" },
-	            _react2.default.createElement(
-	              "div",
-	              { className: "card-title" },
-	              title
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "item-location" },
-	              _react2.default.createElement(
-	                "span",
-	                null,
-	                "Location: "
-	              ),
-	              item.location[0]
-	            ),
-	            _react2.default.createElement(
-	              "div",
-	              { className: "item-condition" },
-	              _react2.default.createElement(
-	                "span",
-	                null,
-	                "Condition: "
-	              ),
-	              condition
-	            ),
-	            _react2.default.createElement(
-	              "a",
-	              { className: "btn btn-primary btn-block view-on-ebay", target: "_blank", href: item.viewItemURL[0] },
-	              "View On Ebay"
-	            )
-	          )
+	          { className: "loader" },
+	          "Loading..."
 	        );
-	      })
-	    )
-	  );
-	};
+	      }
+	
+	      if (this.props.totalResults === 0) {
+	        return _react2.default.createElement(
+	          "div",
+	          null,
+	          "0 items"
+	        );
+	      }
+	
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "ebay-items" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "total-results" },
+	          _react2.default.createElement(
+	            "span",
+	            null,
+	            "Results found: ",
+	            this.props.totalResults
+	          ),
+	          _react2.default.createElement(
+	            "a",
+	            { className: "btn btn-primary btn-sm", target: "_blank", href: this.props.ebayUrl },
+	            "Browse ",
+	            this.props.keywords,
+	            " on Ebay"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "card-columns" },
+	          this.props.items.map(function (item, idx) {
+	            var title = item.title[0].length > 20 ? item.title[0].slice(0, 20) + "..." : item.title[0];
+	            var condition = item.condition ? item.condition[0].conditionDisplayName[0] : "Unknown";
+	            return _react2.default.createElement(
+	              "div",
+	              { className: "card", key: idx },
+	              _react2.default.createElement("img", { className: "card-img-top", src: item.galleryURL[0] }),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "card-block" },
+	                _react2.default.createElement(
+	                  "div",
+	                  { className: "card-title" },
+	                  title
+	                ),
+	                _react2.default.createElement(
+	                  "div",
+	                  { className: "item-location" },
+	                  _react2.default.createElement(
+	                    "span",
+	                    null,
+	                    "Location: "
+	                  ),
+	                  item.location[0]
+	                ),
+	                _react2.default.createElement(
+	                  "div",
+	                  { className: "item-condition" },
+	                  _react2.default.createElement(
+	                    "span",
+	                    null,
+	                    "Condition: "
+	                  ),
+	                  condition
+	                ),
+	                _react2.default.createElement(
+	                  "a",
+	                  { className: "btn btn-primary btn-block view-on-ebay", target: "_blank", href: item.viewItemURL[0] },
+	                  "View On Ebay"
+	                )
+	              )
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return EbayItems;
+	}(_react2.default.Component);
 	
 	exports.default = EbayItems;
 
@@ -32497,7 +32569,7 @@
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      e.preventDefault();
-	      this.props.searchEbayByUrl(this.state.picture_url);
+	      this.props.getLabels(this.state.picture_url);
 	    }
 	  }, {
 	    key: 'render',
@@ -32536,14 +32608,14 @@
 	
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    loading: state.loading.loadingEbay
+	    loading: state.loading.loadingImage
 	  };
 	};
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    searchEbayByUrl: function searchEbayByUrl(picture_url) {
-	      return dispatch((0, _item_actions.searchEbayByUrl)(picture_url));
+	    getLabels: function getLabels(picture_url) {
+	      return dispatch((0, _item_actions.getLabels)(picture_url));
 	    }
 	  };
 	};
@@ -32570,13 +32642,15 @@
 	
 	var _ebay_items2 = _interopRequireDefault(_ebay_items);
 	
+	var _item_actions = __webpack_require__(273);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var mapStateToProps = function mapStateToProps(state) {
 	  var ebayUrl = void 0;
 	  var totalResults = void 0;
 	  var items = void 0;
-	  if (state.items.ebayItems === undefined) {
+	  if (jQuery.isEmptyObject(state.items.ebayItems)) {
 	    ebayUrl = "";
 	    totalResults = 0;
 	    items = [];
@@ -32589,11 +32663,20 @@
 	    loading: state.loading.loadingEbay,
 	    ebayUrl: ebayUrl,
 	    totalResults: totalResults,
-	    items: items
+	    items: items,
+	    keywords: state.items.labels[0].description + (state.items.labels[1] ? " " + state.items.labels[1].description : "")
 	  };
 	};
 	
-	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(_ebay_items2.default);
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    getEbayItems: function getEbayItems(keywords) {
+	      return dispatch((0, _item_actions.getEbayItems)(keywords));
+	    }
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_ebay_items2.default);
 
 /***/ }),
 /* 367 */
@@ -32619,16 +32702,181 @@
 	
 	  Object.freeze(oldState);
 	  switch (action.type) {
+	    case _item_actions.START_LOADING_IMAGE:
+	      return Object.assign({}, { loadingImage: true });
 	    case _item_actions.START_LOADING_EBAY:
 	      return Object.assign({}, { loadingEbay: true });
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
 	      return Object.assign({}, { loadingEbay: false });
+	    case _item_actions.RECEIVE_IMAGE_LABELS:
+	      return Object.assign({}, { loadingImage: false });
 	    default:
 	      return oldState;
 	  }
 	};
 	
 	exports.default = LoadingReducer;
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _labels_container = __webpack_require__(369);
+	
+	var _labels_container2 = _interopRequireDefault(_labels_container);
+	
+	var _ebay_items_container = __webpack_require__(366);
+	
+	var _ebay_items_container2 = _interopRequireDefault(_ebay_items_container);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Results = function (_React$Component) {
+	  _inherits(Results, _React$Component);
+	
+	  function Results(props) {
+	    _classCallCheck(this, Results);
+	
+	    var _this = _possibleConstructorReturn(this, (Results.__proto__ || Object.getPrototypeOf(Results)).call(this, props));
+	
+	    _this.state = {
+	      labels: true,
+	      ebay: false
+	    };
+	    _this.openTab = _this.openTab.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Results, [{
+	    key: 'openTab',
+	    value: function openTab(field) {
+	      this.setState({ labels: false, ebay: false });
+	      this.setState(_defineProperty({}, field, true));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'tabs' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'tab-items', onClick: function onClick() {
+	                return _this2.openTab("labels");
+	              } },
+	            'labels'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'tab-items', onClick: function onClick() {
+	                return _this2.openTab("ebay");
+	              } },
+	            'ebay'
+	          )
+	        ),
+	        this.state.labels ? _react2.default.createElement(_labels_container2.default, null) : "",
+	        this.state.ebay ? _react2.default.createElement(_ebay_items_container2.default, null) : ""
+	      );
+	    }
+	  }]);
+	
+	  return Results;
+	}(_react2.default.Component);
+	
+	exports.default = Results;
+
+/***/ }),
+/* 369 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(183);
+	
+	var _labels = __webpack_require__(370);
+	
+	var _labels2 = _interopRequireDefault(_labels);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    loading: state.loading.loadingImage,
+	    labels: state.items.labels
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, null)(_labels2.default);
+
+/***/ }),
+/* 370 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Labels = function Labels(_ref) {
+	  var labels = _ref.labels,
+	      loading = _ref.loading;
+	
+	  if (loading) {
+	    return _react2.default.createElement(
+	      "div",
+	      { className: "loader" },
+	      "Loading..."
+	    );
+	  }
+	
+	  return _react2.default.createElement(
+	    "div",
+	    { className: "labels" },
+	    JSON.stringify(labels)
+	  );
+	};
+	
+	exports.default = Labels;
 
 /***/ })
 /******/ ]);
