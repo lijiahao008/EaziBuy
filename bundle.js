@@ -29753,8 +29753,12 @@
 	      if (this.props.error) {
 	        return _react2.default.createElement(
 	          'div',
-	          { className: 'label-error' },
-	          this.props.error
+	          { className: 'label-error-container' },
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'label-error' },
+	            this.props.error
+	          )
 	        );
 	      }
 	      return _react2.default.createElement(

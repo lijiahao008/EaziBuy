@@ -23,7 +23,7 @@ class Results extends React.Component {
       return <div>Select an image to show results.</div>;
     }
     if (this.props.error) {
-      return <div className="label-error">{this.props.error}</div>
+      return <div className="label-error-container"><div className="label-error">{this.props.error}</div></div>
     }
     return (
       <div>
