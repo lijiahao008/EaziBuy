@@ -60,6 +60,25 @@ body {
   text-decoration: underline;
 }
 
+.labels {
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.label-item {
+  width: 200px;
+  margin: auto;
+}
+
+.label-detail {
+  position: relative;
+  font-weight: bold;
+  font-size: 25px;
+  text-align: center;
+  top: 135px;
+}
+
 .ebay-items {
   height: 90vh;
   padding: 10px;

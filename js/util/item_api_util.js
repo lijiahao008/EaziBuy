@@ -13,7 +13,7 @@ const buildData = (image_url) => {
         "features":[
           {
             "type":"LABEL_DETECTION",
-            "maxResults": 5
+            "maxResults": 4
           }
         ]
       }

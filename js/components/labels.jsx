@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { Line, Circle } from 'rc-progress';
+import LabelItem from './label_item';
 
 const Labels = ({ labels, loading }) => {
   if (loading) {
@@ -8,7 +9,7 @@ const Labels = ({ labels, loading }) => {
 
   return(
     <div className="labels">
-      {JSON.stringify(labels)}
+      {labels.map((label, idx)=>(<div className="label-item" key={idx}><LabelItem label={label} /></div>))}
     </div>
   );
 };
