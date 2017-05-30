@@ -1,4 +1,4 @@
-import { RECEIVE_EBAY_ITEMS, RECEIVE_IMAGE_ERRORS, RECEIVE_IMAGE_LABELS } from '../actions/item_actions';
+import { RECEIVE_EBAY_ITEMS, RECEIVE_IMAGE_ERROR, RECEIVE_IMAGE_LABELS } from '../actions/item_actions';
 import merge from 'lodash/merge';
 
 const initialState ={
@@ -13,7 +13,7 @@ const ItemsReducer = (oldState = initialState, action) => {
     case RECEIVE_IMAGE_LABELS:
       newState.labels = action.labels;
       return Object.assign({}, newState);
-    case RECEIVE_IMAGE_ERRORS:
+    case RECEIVE_IMAGE_ERROR:
       return Object.assign({}, {error: action.error});
     case RECEIVE_EBAY_ITEMS:
       newState.ebayItems = action.items.findItemsByKeywordsResponse[0];

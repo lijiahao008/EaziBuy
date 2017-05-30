@@ -29743,8 +29743,19 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      if (this.props.initialPage) {
-	        return _react2.default.createElement('div', null);
+	      if (this.props.initialPage && !this.props.error) {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          'Select an image to show results.'
+	        );
+	      }
+	      if (this.props.error) {
+	        return _react2.default.createElement(
+	          'div',
+	          { className: 'label-error' },
+	          this.props.error
+	        );
 	      }
 	      return _react2.default.createElement(
 	        'div',
@@ -29778,7 +29789,8 @@
 	
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
-	    initialPage: jQuery.isEmptyObject(state.items.labels)
+	    initialPage: jQuery.isEmptyObject(state.items.labels),
+	    error: state.items.error ? state.items.error : false
 	  };
 	};
 	
@@ -30152,7 +30164,7 @@
 	    case _item_actions.RECEIVE_IMAGE_LABELS:
 	      newState.labels = action.labels;
 	      return Object.assign({}, newState);
-	    case _item_actions.RECEIVE_IMAGE_ERRORS:
+	    case _item_actions.RECEIVE_IMAGE_ERROR:
 	      return Object.assign({}, { error: action.error });
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
 	      newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
@@ -32863,6 +32875,7 @@
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
 	      return Object.assign({}, { loadingEbay: false });
 	    case _item_actions.RECEIVE_IMAGE_LABELS:
+	    case _item_actions.RECEIVE_IMAGE_ERROR:
 	      return Object.assign({}, { loadingImage: false });
 	    default:
 	      return oldState;
