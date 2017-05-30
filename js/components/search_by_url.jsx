@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, hashHistory, withRouter } from 'react-router';
 import { connect } from 'react-redux';
-import { getLabels } from '../actions/item_actions';
+import { getLabels, clearError } from '../actions/item_actions';
 
 
 class SearchByUrl extends React.Component {
@@ -21,6 +21,7 @@ class SearchByUrl extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    this.props.clearError();
     this.props.getLabels(this.state.picture_url);
   }
 
@@ -47,7 +48,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  getLabels: (picture_url) => dispatch(getLabels(picture_url))
+  getLabels: (picture_url) => dispatch(getLabels(picture_url)),
+  clearError: () => dispatch(clearError())
 });
 
 export default connect(

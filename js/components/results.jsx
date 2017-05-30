@@ -19,10 +19,10 @@ class Results extends React.Component {
   }
 
   render () {
-    if (this.props.initialPage && !this.props.error) {
+    if (this.props.initialPage && this.props.error === "") {
       return <div>Select an image to show results.</div>;
     }
-    if (this.props.error) {
+    if (this.props.error !== "") {
       return <div className="label-error-container"><div className="label-error">{this.props.error}</div></div>
     }
     return (
@@ -40,7 +40,7 @@ class Results extends React.Component {
 
 const mapStateToProps = (state) => ({
   initialPage: jQuery.isEmptyObject(state.items.labels),
-  error: state.items.error ? state.items.error : false
+  error: state.items.error
 });
 
 export default connect(

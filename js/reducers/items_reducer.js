@@ -3,7 +3,8 @@ import merge from 'lodash/merge';
 
 const initialState ={
   labels: {},
-  ebayItems: {}
+  ebayItems: {},
+  error: ""
 }
 
 const ItemsReducer = (oldState = initialState, action) => {
@@ -14,7 +15,8 @@ const ItemsReducer = (oldState = initialState, action) => {
       newState.labels = action.labels;
       return Object.assign({}, newState);
     case RECEIVE_IMAGE_ERROR:
-      return Object.assign({}, {error: action.error});
+      newState.error = action.error;
+      return Object.assign({}, newState);
     case RECEIVE_EBAY_ITEMS:
       newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
       return Object.assign({}, newState);

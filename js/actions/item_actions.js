@@ -51,3 +51,7 @@ export const getEbayItems = (keywords) => dispatch => {
     return dispatch(receiveEbayItems(items))
   })
 }
+
+export const clearError = () => dispatch => {
+  return dispatch(receiveImageError(""));
+}

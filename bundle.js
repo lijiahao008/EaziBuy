@@ -29500,6 +29500,7 @@
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      e.preventDefault();
+	      this.props.clearError();
 	      this.props.getLabels(this.state.picture_url);
 	    }
 	  }, {
@@ -29547,6 +29548,9 @@
 	  return {
 	    getLabels: function getLabels(picture_url) {
 	      return dispatch((0, _item_actions.getLabels)(picture_url));
+	    },
+	    clearError: function clearError() {
+	      return dispatch((0, _item_actions.clearError)());
 	    }
 	  };
 	};
@@ -29562,7 +29566,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.getEbayItems = exports.getLabels = exports.startLoadingImage = exports.startLoadingEbay = exports.receiveImageError = exports.receiveImageLabels = exports.receiveEbayItems = exports.START_LOADING_IMAGE = exports.START_LOADING_EBAY = exports.RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_LABELS = exports.RECEIVE_EBAY_ITEMS = undefined;
+	exports.clearError = exports.getEbayItems = exports.getLabels = exports.startLoadingImage = exports.startLoadingEbay = exports.receiveImageError = exports.receiveImageLabels = exports.receiveEbayItems = exports.START_LOADING_IMAGE = exports.START_LOADING_EBAY = exports.RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_LABELS = exports.RECEIVE_EBAY_ITEMS = undefined;
 	
 	var _item_api_util = __webpack_require__(273);
 	
@@ -29629,6 +29633,12 @@
 	    return APIUtil.fetchEbayItems(keywords).then(function (items) {
 	      return dispatch(receiveEbayItems(items));
 	    });
+	  };
+	};
+	
+	var clearError = exports.clearError = function clearError() {
+	  return function (dispatch) {
+	    return dispatch(receiveImageError(""));
 	  };
 	};
 
@@ -29743,14 +29753,14 @@
 	    value: function render() {
 	      var _this2 = this;
 	
-	      if (this.props.initialPage && !this.props.error) {
+	      if (this.props.initialPage && this.props.error === "") {
 	        return _react2.default.createElement(
 	          'div',
 	          null,
 	          'Select an image to show results.'
 	        );
 	      }
-	      if (this.props.error) {
+	      if (this.props.error !== "") {
 	        return _react2.default.createElement(
 	          'div',
 	          { className: 'label-error-container' },
@@ -29794,7 +29804,7 @@
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    initialPage: jQuery.isEmptyObject(state.items.labels),
-	    error: state.items.error ? state.items.error : false
+	    error: state.items.error
 	  };
 	};
 	
@@ -30155,7 +30165,8 @@
 	
 	var initialState = {
 	  labels: {},
-	  ebayItems: {}
+	  ebayItems: {},
+	  error: ""
 	};
 	
 	var ItemsReducer = function ItemsReducer() {
@@ -30169,7 +30180,8 @@
 	      newState.labels = action.labels;
 	      return Object.assign({}, newState);
 	    case _item_actions.RECEIVE_IMAGE_ERROR:
-	      return Object.assign({}, { error: action.error });
+	      newState.error = action.error;
+	      return Object.assign({}, newState);
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
 	      newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
 	      return Object.assign({}, newState);
