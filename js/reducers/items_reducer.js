@@ -25,7 +25,6 @@ const ItemsReducer = (oldState = initialState, action) => {
       newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
       return Object.assign({}, newState);
     case RECEIVE_YOUTUBE_ITEMS:
-      debugger
       newState.youtubeItems = action.items;
       return Object.assign({}, newState);
     default:
