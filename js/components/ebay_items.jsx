@@ -21,9 +21,8 @@ class EbayItems extends React.Component {
     }
 
     if (this.props.totalResults === 0) {
-      return <div>0 items</div>;
+      return <div>Sorry! No results found.</div>;
     }
-
     return(
       <div className="ebay-items">
         <div className="total-results">

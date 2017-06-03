@@ -14,7 +14,7 @@ const mapStateToProps = state => {
   }
   else {
     ebayUrl = state.items.ebayItems.itemSearchURL[0];
-    totalResults =  state.items.ebayItems.paginationOutput[0].totalEntries[0];
+    totalResults =  parseInt(state.items.ebayItems.paginationOutput[0].totalEntries[0]);
     items = state.items.ebayItems.searchResult[0].item;
   }
     return {
