@@ -29566,7 +29566,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.clearError = exports.getEbayItems = exports.getLabels = exports.startLoadingImage = exports.startLoadingEbay = exports.receiveImageError = exports.receiveImageLabels = exports.receiveEbayItems = exports.START_LOADING_IMAGE = exports.START_LOADING_EBAY = exports.RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_LABELS = exports.RECEIVE_EBAY_ITEMS = undefined;
+	exports.clearError = exports.getYoutubeItems = exports.getEbayItems = exports.getLabels = exports.startLoadingImage = exports.startLoadingYoutube = exports.startLoadingEbay = exports.receiveImageError = exports.receiveImageLabels = exports.receiveYoutubeItems = exports.receiveEbayItems = exports.START_LOADING_YOUTUBE = exports.START_LOADING_IMAGE = exports.START_LOADING_EBAY = exports.RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_LABELS = exports.RECEIVE_YOUTUBE_ITEMS = exports.RECEIVE_EBAY_ITEMS = undefined;
 	
 	var _item_api_util = __webpack_require__(273);
 	
@@ -29575,14 +29575,23 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 	
 	var RECEIVE_EBAY_ITEMS = exports.RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
+	var RECEIVE_YOUTUBE_ITEMS = exports.RECEIVE_YOUTUBE_ITEMS = "RECEIVE_YOUTUBE_ITEMS";
 	var RECEIVE_IMAGE_LABELS = exports.RECEIVE_IMAGE_LABELS = "RECEIVE_IMAGE_LABELS";
 	var RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_ERROR = "RECEIVE_IMAGE_ERROR";
 	var START_LOADING_EBAY = exports.START_LOADING_EBAY = "START_LOADING_EBAY";
 	var START_LOADING_IMAGE = exports.START_LOADING_IMAGE = "START_LOADING_IMAGE";
+	var START_LOADING_YOUTUBE = exports.START_LOADING_YOUTUBE = "START_LOADING_YOUTUBE";
 	
 	var receiveEbayItems = exports.receiveEbayItems = function receiveEbayItems(items) {
 	  return {
 	    type: RECEIVE_EBAY_ITEMS,
+	    items: items
+	  };
+	};
+	
+	var receiveYoutubeItems = exports.receiveYoutubeItems = function receiveYoutubeItems(items) {
+	  return {
+	    type: RECEIVE_YOUTUBE_ITEMS,
 	    items: items
 	  };
 	};
@@ -29604,6 +29613,12 @@
 	var startLoadingEbay = exports.startLoadingEbay = function startLoadingEbay() {
 	  return {
 	    type: START_LOADING_EBAY
+	  };
+	};
+	
+	var startLoadingYoutube = exports.startLoadingYoutube = function startLoadingYoutube() {
+	  return {
+	    type: START_LOADING_YOUTUBE
 	  };
 	};
 	
@@ -29632,6 +29647,15 @@
 	    dispatch(startLoadingEbay());
 	    return APIUtil.fetchEbayItems(keywords).then(function (items) {
 	      return dispatch(receiveEbayItems(items));
+	    });
+	  };
+	};
+	
+	var getYoutubeItems = exports.getYoutubeItems = function getYoutubeItems(keywords) {
+	  return function (dispatch) {
+	    dispatch(startLoadingYoutube());
+	    return APIUtil.fetchYoutubeItems(keywords).then(function (items) {
+	      return dispatch(receiveYoutubeItems(items));
 	    });
 	  };
 	};
@@ -29689,6 +29713,13 @@
 	    dataType: 'jsonp'
 	  });
 	};
+	
+	var fetchYoutubeItems = exports.fetchYoutubeItems = function fetchYoutubeItems(key_words) {
+	  return $.ajax({
+	    method: 'GET',
+	    url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + key_words + "&type=video&maxResults=9&videoCaption=closedCaption&key=" + google_api_key
+	  });
+	};
 
 /***/ }),
 /* 274 */
@@ -29714,6 +29745,10 @@
 	
 	var _ebay_items_container2 = _interopRequireDefault(_ebay_items_container);
 	
+	var _youtube_container = __webpack_require__(472);
+	
+	var _youtube_container2 = _interopRequireDefault(_youtube_container);
+	
 	var _reactRedux = __webpack_require__(183);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -29736,7 +29771,8 @@
 	
 	    _this.state = {
 	      labels: true,
-	      ebay: false
+	      ebay: false,
+	      youtube: false
 	    };
 	    _this.openTab = _this.openTab.bind(_this);
 	    return _this;
@@ -29745,7 +29781,7 @@
 	  _createClass(Results, [{
 	    key: 'openTab',
 	    value: function openTab(field) {
-	      this.setState({ labels: false, ebay: false });
+	      this.setState({ labels: false, ebay: false, youtube: false });
 	      this.setState(_defineProperty({}, field, true));
 	    }
 	  }, {
@@ -29790,10 +29826,18 @@
 	                return _this2.openTab("ebay");
 	              } },
 	            'ebay'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'tab-items', onClick: function onClick() {
+	                return _this2.openTab("youtube");
+	              } },
+	            'Youtube'
 	          )
 	        ),
 	        this.state.labels ? _react2.default.createElement(_labels_container2.default, null) : "",
-	        this.state.ebay ? _react2.default.createElement(_ebay_items_container2.default, null) : ""
+	        this.state.ebay ? _react2.default.createElement(_ebay_items_container2.default, null) : "",
+	        this.state.youtube ? _react2.default.createElement(_youtube_container2.default, null) : ""
 	      );
 	    }
 	  }]);
@@ -32407,6 +32451,7 @@
 	var initialState = {
 	  labels: {},
 	  ebayItems: {},
+	  youtubeItems: {},
 	  error: ""
 	};
 	
@@ -32425,6 +32470,10 @@
 	      return Object.assign({}, newState);
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
 	      newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
+	      return Object.assign({}, newState);
+	    case _item_actions.RECEIVE_YOUTUBE_ITEMS:
+	      debugger;
+	      newState.youtubeItems = action.items;
 	      return Object.assign({}, newState);
 	    default:
 	      return oldState;
@@ -35131,6 +35180,10 @@
 	      return Object.assign({}, { loadingEbay: true });
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
 	      return Object.assign({}, { loadingEbay: false });
+	    case _item_actions.START_LOADING_YOUTUBE:
+	      return Object.assign({}, { loadingYoutube: true });
+	    case _item_actions.RECEIVE_YOUTUBE_ITEMS:
+	      return Object.assign({}, { loadingYoutube: false });
 	    case _item_actions.RECEIVE_IMAGE_LABELS:
 	    case _item_actions.RECEIVE_IMAGE_ERROR:
 	      return Object.assign({}, { loadingImage: false });
@@ -35168,6 +35221,185 @@
 	thunk.withExtraArgument = createThunkMiddleware;
 	
 	exports['default'] = thunk;
+
+/***/ }),
+/* 472 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(183);
+	
+	var _youtube_items = __webpack_require__(473);
+	
+	var _youtube_items2 = _interopRequireDefault(_youtube_items);
+	
+	var _item_actions = __webpack_require__(272);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  var items = void 0;
+	  var totalResults = void 0;
+	  if (jQuery.isEmptyObject(state.items.youtubeItems)) {
+	    items = [];
+	  } else {
+	    items = state.items.youtubeItems.items;
+	    totalResults = state.items.youtubeItems.pageInfo.totalResults;
+	  }
+	  return {
+	    loading: state.loading.loadingYoutube,
+	    items: items,
+	    totalResults: totalResults,
+	    keywords: state.items.labels[0].description + (state.items.labels[1] ? " " + state.items.labels[1].description : "")
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    getYoutubeItems: function getYoutubeItems(keywords) {
+	      return dispatch((0, _item_actions.getYoutubeItems)(keywords));
+	    }
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_youtube_items2.default);
+
+/***/ }),
+/* 473 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var YoutubeItems = function (_React$Component) {
+	  _inherits(YoutubeItems, _React$Component);
+	
+	  function YoutubeItems(props) {
+	    _classCallCheck(this, YoutubeItems);
+	
+	    return _possibleConstructorReturn(this, (YoutubeItems.__proto__ || Object.getPrototypeOf(YoutubeItems)).call(this, props));
+	  }
+	
+	  _createClass(YoutubeItems, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      this.props.getYoutubeItems(this.props.keywords);
+	    }
+	  }, {
+	    key: "componentDidUpdate",
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (prevProps.keywords !== this.props.keywords) {
+	        this.props.getYoutubeItems(this.props.keywords);
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      if (this.props.loading) {
+	        return _react2.default.createElement(
+	          "div",
+	          { className: "loader" },
+	          "Loading..."
+	        );
+	      }
+	
+	      if (this.props.totalResults === 0) {
+	        return _react2.default.createElement(
+	          "div",
+	          null,
+	          "Sorry! No results found."
+	        );
+	      }
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "ebay-items" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "total-results" },
+	          _react2.default.createElement(
+	            "span",
+	            null,
+	            "Results found: ",
+	            this.props.totalResults
+	          ),
+	          _react2.default.createElement(
+	            "a",
+	            { className: "btn btn-danger btn-sm", target: "_blank", href: "https://www.youtube.com/results?search_query=" + this.props.keywords },
+	            "Browse ",
+	            this.props.keywords,
+	            " on Youtube"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "card-columns" },
+	          this.props.items.map(function (item, idx) {
+	            var title = item.snippet.title.length > 20 ? item.snippet.title.slice(0, 20) + "..." : item.snippet.title;
+	            return _react2.default.createElement(
+	              "div",
+	              { className: "card", key: idx },
+	              _react2.default.createElement("img", { className: "card-img-top", src: item.snippet.thumbnails.default.url }),
+	              _react2.default.createElement(
+	                "div",
+	                { className: "card-block" },
+	                _react2.default.createElement(
+	                  "div",
+	                  { className: "card-title" },
+	                  title
+	                ),
+	                _react2.default.createElement(
+	                  "div",
+	                  { className: "item-location" },
+	                  _react2.default.createElement(
+	                    "span",
+	                    null,
+	                    "Channel: "
+	                  ),
+	                  item.snippet.channelTitle
+	                ),
+	                _react2.default.createElement(
+	                  "a",
+	                  { className: "btn btn-danger btn-block view-on-ebay", target: "_blank", href: "https://www.youtube.com/watch?v=" + item.id.videoId },
+	                  "View On Youtube"
+	                )
+	              )
+	            );
+	          })
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return YoutubeItems;
+	}(_react2.default.Component);
+	
+	exports.default = YoutubeItems;
 
 /***/ })
 /******/ ]);

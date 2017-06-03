@@ -1,4 +1,4 @@
-import { RECEIVE_EBAY_ITEMS, START_LOADING_EBAY, START_LOADING_IMAGE, RECEIVE_IMAGE_LABELS, RECEIVE_IMAGE_ERROR } from '../actions/item_actions';
+import { RECEIVE_EBAY_ITEMS, START_LOADING_EBAY, START_LOADING_IMAGE, RECEIVE_IMAGE_LABELS, RECEIVE_IMAGE_ERROR, RECEIVE_YOUTUBE_ITEMS, START_LOADING_YOUTUBE } from '../actions/item_actions';
 import merge from 'lodash/merge';
 
 const LoadingReducer = (oldState = {}, action) => {
@@ -10,6 +10,10 @@ const LoadingReducer = (oldState = {}, action) => {
       return Object.assign({}, {loadingEbay: true});
     case RECEIVE_EBAY_ITEMS:
       return Object.assign({}, {loadingEbay: false});
+    case START_LOADING_YOUTUBE:
+      return Object.assign({}, {loadingYoutube: true});
+    case RECEIVE_YOUTUBE_ITEMS:
+      return Object.assign({}, {loadingYoutube: false});
     case RECEIVE_IMAGE_LABELS:
     case RECEIVE_IMAGE_ERROR:
       return Object.assign({}, {loadingImage: false});

@@ -1,14 +1,21 @@
 import * as APIUtil from '../util/item_api_util'
 
 export const RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
+export const RECEIVE_YOUTUBE_ITEMS = "RECEIVE_YOUTUBE_ITEMS";
 export const RECEIVE_IMAGE_LABELS = "RECEIVE_IMAGE_LABELS";
 export const RECEIVE_IMAGE_ERROR = "RECEIVE_IMAGE_ERROR";
 export const START_LOADING_EBAY = "START_LOADING_EBAY";
 export const START_LOADING_IMAGE = "START_LOADING_IMAGE";
+export const START_LOADING_YOUTUBE = "START_LOADING_YOUTUBE";
 
 
 export const receiveEbayItems = items => ({
   type: RECEIVE_EBAY_ITEMS,
+  items
+});
+
+export const receiveYoutubeItems = items => ({
+  type: RECEIVE_YOUTUBE_ITEMS,
   items
 });
 
@@ -25,6 +32,10 @@ export const receiveImageError = error => ({
 
 export const startLoadingEbay = () => ({
   type: START_LOADING_EBAY
+});
+
+export const startLoadingYoutube = () => ({
+  type: START_LOADING_YOUTUBE
 });
 
 export const startLoadingImage = () => ({
@@ -49,6 +60,13 @@ export const getEbayItems = (keywords) => dispatch => {
   dispatch(startLoadingEbay());
   return APIUtil.fetchEbayItems(keywords).then((items) => {
     return dispatch(receiveEbayItems(items))
+  })
+}
+
+export const getYoutubeItems = (keywords) => dispatch => {
+  dispatch(startLoadingYoutube());
+  return APIUtil.fetchYoutubeItems(keywords).then((items) => {
+    return dispatch(receiveYoutubeItems(items))
   })
 }
 

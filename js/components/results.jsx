@@ -1,6 +1,7 @@
 import React from 'react';
 import LabelsContainer from './labels_container';
 import EbayItemsContainer from './ebay_items_container';
+import YoutubeItemsContainer from './youtube_container';
 import { connect } from 'react-redux';
 
 class Results extends React.Component {
@@ -8,13 +9,14 @@ class Results extends React.Component {
     super(props)
     this.state ={
       labels: true,
-      ebay: false
+      ebay: false,
+      youtube: false
     }
     this.openTab = this.openTab.bind(this);
   }
 
   openTab(field){
-    this.setState({labels: false, ebay: false});
+    this.setState({labels: false, ebay: false, youtube: false});
     this.setState({[field]: true});
   }
 
@@ -30,9 +32,11 @@ class Results extends React.Component {
         <div className="tabs">
           <div className="tab-items"  onClick={()=>this.openTab("labels")}>labels</div>
           <div className="tab-items"  onClick={()=>this.openTab("ebay")}>ebay</div>
+          <div className="tab-items"  onClick={()=>this.openTab("youtube")}>Youtube</div>
         </div>
         {this.state.labels ? <LabelsContainer /> : ""}
         {this.state.ebay ? <EbayItemsContainer /> : ""}
+        {this.state.youtube ? <YoutubeItemsContainer /> : ""}
     </div>
     );
   }

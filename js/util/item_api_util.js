@@ -41,3 +41,10 @@ export const fetchEbayItems = (key_word) => {
     dataType: 'jsonp'
   });
 };
+
+export const fetchYoutubeItems = (key_words) => {
+  return $.ajax({
+    method: 'GET',
+    url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + key_words + "&type=video&maxResults=9&videoCaption=closedCaption&key="+ google_api_key
+  });
+};
