@@ -48,14 +48,16 @@ function timestamp() {
 }
 
 function getAmazonItemInfo(keywords) {
-    var PrivateKey = "Fpsee6LE955mwJeUR7tSGLkIhuBizpDUhdGtkHkO";
-    var PublicKey = "AKIAJNFWNVA7ZV7YUENQ";
-    var AssociateTag = "eaz09-20";
+    var PrivateKey = "";
+    var PublicKey = "";
+    var AssociateTag = "";
 
     var parameters = [];
     parameters.push("AWSAccessKeyId=" + PublicKey);
-    parameters.push("keywords=" + keywords);
-    parameters.push("Operation=ItemLookup");
+    parameters.push("Keywords=" + keywords.split(" ").join("%20"));
+    parameters.push("Operation=ItemSearch");
+    parameters.push("ResponseGroup=Images%2CItemAttributes%2COffers");
+    parameters.push("SearchIndex=All");
     parameters.push("Service=AWSECommerceService");
     parameters.push("Timestamp=" + encodeURIComponent(timestamp()));
     parameters.push("Version=2011-08-01");
@@ -70,8 +72,10 @@ parameters.push("AssociateTag=" + AssociateTag);
         signature = encodeURIComponent(signature);
 
     var amazonUrl =  "http://webservices.amazon.com/onca/xml?" + paramString + "&Signature=" + signature;
-    console.log(amazonUrl);
+    return amazonUrl;
   }
+  debugger
+  return getAmazonItemInfo(keywords);
 }
 
 
@@ -105,6 +109,7 @@ export const fetchYoutubeItems = (key_words) => {
 export const fetchAmazonItems = (keywords) => {
   return $.ajax({
     method: 'GET',
-    url: buildAmazonRequest(keywords)
+    url: buildAmazonRequest(keywords),
+    dataType: 'jsonp'
   });
 };

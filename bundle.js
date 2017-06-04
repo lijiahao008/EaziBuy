@@ -29747,14 +29747,16 @@
 	  }
 	
 	  function getAmazonItemInfo(keywords) {
-	    var PrivateKey = "Fpsee6LE955mwJeUR7tSGLkIhuBizpDUhdGtkHkO";
-	    var PublicKey = "AKIAJNFWNVA7ZV7YUENQ";
-	    var AssociateTag = "eaz09-20";
+	    var PrivateKey = "";
+	    var PublicKey = "";
+	    var AssociateTag = "";
 	
 	    var parameters = [];
 	    parameters.push("AWSAccessKeyId=" + PublicKey);
-	    parameters.push("keywords=" + keywords);
-	    parameters.push("Operation=ItemLookup");
+	    parameters.push("Keywords=" + keywords.split(" ").join("%20"));
+	    parameters.push("Operation=ItemSearch");
+	    parameters.push("ResponseGroup=Images%2CItemAttributes%2COffers");
+	    parameters.push("SearchIndex=All");
 	    parameters.push("Service=AWSECommerceService");
 	    parameters.push("Timestamp=" + encodeURIComponent(timestamp()));
 	    parameters.push("Version=2011-08-01");
@@ -29769,8 +29771,10 @@
 	    signature = encodeURIComponent(signature);
 	
 	    var amazonUrl = "http://webservices.amazon.com/onca/xml?" + paramString + "&Signature=" + signature;
-	    console.log(amazonUrl);
+	    return amazonUrl;
 	  }
+	  debugger;
+	  return getAmazonItemInfo(keywords);
 	};
 	
 	var fetchLabel = exports.fetchLabel = function fetchLabel(image_url) {
@@ -29803,7 +29807,8 @@
 	var fetchAmazonItems = exports.fetchAmazonItems = function fetchAmazonItems(keywords) {
 	  return $.ajax({
 	    method: 'GET',
-	    url: buildAmazonRequest(keywords)
+	    url: buildAmazonRequest(keywords),
+	    dataType: 'jsonp'
 	  });
 	};
 
@@ -29835,6 +29840,10 @@
 	
 	var _youtube_container2 = _interopRequireDefault(_youtube_container);
 	
+	var _amazon_container = __webpack_require__(474);
+	
+	var _amazon_container2 = _interopRequireDefault(_amazon_container);
+	
 	var _reactRedux = __webpack_require__(183);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -29858,7 +29867,8 @@
 	    _this.state = {
 	      labels: true,
 	      ebay: false,
-	      youtube: false
+	      youtube: false,
+	      amazon: false
 	    };
 	    _this.openTab = _this.openTab.bind(_this);
 	    return _this;
@@ -29867,7 +29877,7 @@
 	  _createClass(Results, [{
 	    key: 'openTab',
 	    value: function openTab(field) {
-	      this.setState({ labels: false, ebay: false, youtube: false });
+	      this.setState({ labels: false, ebay: false, youtube: false, amazon: false });
 	      this.setState(_defineProperty({}, field, true));
 	    }
 	  }, {
@@ -29919,11 +29929,19 @@
 	                return _this2.openTab("youtube");
 	              } },
 	            'Youtube'
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'tab-items', onClick: function onClick() {
+	                return _this2.openTab("amazon");
+	              } },
+	            'Amazon'
 	          )
 	        ),
 	        this.state.labels ? _react2.default.createElement(_labels_container2.default, null) : "",
 	        this.state.ebay ? _react2.default.createElement(_ebay_items_container2.default, null) : "",
-	        this.state.youtube ? _react2.default.createElement(_youtube_container2.default, null) : ""
+	        this.state.youtube ? _react2.default.createElement(_youtube_container2.default, null) : "",
+	        this.state.amazon ? _react2.default.createElement(_amazon_container2.default, null) : ""
 	      );
 	    }
 	  }]);
@@ -35488,6 +35506,118 @@
 	}(_react2.default.Component);
 	
 	exports.default = YoutubeItems;
+
+/***/ }),
+/* 474 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(183);
+	
+	var _amazon_items = __webpack_require__(475);
+	
+	var _amazon_items2 = _interopRequireDefault(_amazon_items);
+	
+	var _item_actions = __webpack_require__(272);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    keywords: state.items.labels[0].description + (state.items.labels[1] ? " " + state.items.labels[1].description : "")
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    getAmazonItems: function getAmazonItems(keywords) {
+	      return dispatch((0, _item_actions.getAmazonItems)(keywords));
+	    }
+	  };
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_amazon_items2.default);
+
+/***/ }),
+/* 475 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var AmazonItems = function (_React$Component) {
+	  _inherits(AmazonItems, _React$Component);
+	
+	  function AmazonItems(props) {
+	    _classCallCheck(this, AmazonItems);
+	
+	    return _possibleConstructorReturn(this, (AmazonItems.__proto__ || Object.getPrototypeOf(AmazonItems)).call(this, props));
+	  }
+	
+	  _createClass(AmazonItems, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      this.props.getAmazonItems(this.props.keywords);
+	    }
+	  }, {
+	    key: "componentDidUpdate",
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (prevProps.keywords !== this.props.keywords) {
+	        this.props.getAmazonItems(this.props.keywords);
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      if (this.props.loading) {
+	        return _react2.default.createElement(
+	          "div",
+	          { className: "loader" },
+	          "Loading..."
+	        );
+	      }
+	
+	      if (this.props.totalResults === 0) {
+	        return _react2.default.createElement(
+	          "div",
+	          null,
+	          "Sorry! No results found."
+	        );
+	      }
+	      return _react2.default.createElement("div", { className: "ebay-items" });
+	    }
+	  }]);
+	
+	  return AmazonItems;
+	}(_react2.default.Component);
+	
+	exports.default = AmazonItems;
 
 /***/ })
 /******/ ]);
