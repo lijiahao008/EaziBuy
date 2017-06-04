@@ -1,7 +1,8 @@
 import { RECEIVE_EBAY_ITEMS,
   RECEIVE_IMAGE_ERROR,
   RECEIVE_IMAGE_LABELS,
-  RECEIVE_YOUTUBE_ITEMS } from '../actions/item_actions';
+  RECEIVE_YOUTUBE_ITEMS,
+  RECEIVE_AMAZON_ITEMS } from '../actions/item_actions';
 import merge from 'lodash/merge';
 
 const initialState ={
@@ -23,6 +24,9 @@ const ItemsReducer = (oldState = initialState, action) => {
       return Object.assign({}, newState);
     case RECEIVE_EBAY_ITEMS:
       newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
+      return Object.assign({}, newState);
+    case RECEIVE_AMAZON_ITEMS:
+      debugger
       return Object.assign({}, newState);
     case RECEIVE_YOUTUBE_ITEMS:
       newState.youtubeItems = action.items;

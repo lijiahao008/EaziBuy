@@ -2,6 +2,7 @@ import * as APIUtil from '../util/item_api_util'
 
 export const RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
 export const RECEIVE_YOUTUBE_ITEMS = "RECEIVE_YOUTUBE_ITEMS";
+export const RECEIVE_AMAZON_ITEMS = "RECEIVE_AMAZON_ITEMS";
 export const RECEIVE_IMAGE_LABELS = "RECEIVE_IMAGE_LABELS";
 export const RECEIVE_IMAGE_ERROR = "RECEIVE_IMAGE_ERROR";
 export const START_LOADING_EBAY = "START_LOADING_EBAY";
@@ -16,6 +17,11 @@ export const receiveEbayItems = items => ({
 
 export const receiveYoutubeItems = items => ({
   type: RECEIVE_YOUTUBE_ITEMS,
+  items
+});
+
+export const receiveAmazonItems = items => ({
+  type: RECEIVE_AMAZON_ITEMS,
   items
 });
 
@@ -67,6 +73,12 @@ export const getYoutubeItems = (keywords) => dispatch => {
   dispatch(startLoadingYoutube());
   return APIUtil.fetchYoutubeItems(keywords).then((items) => {
     return dispatch(receiveYoutubeItems(items))
+  })
+}
+
+export const getAmazonItems = (keywords) => dispatch => {
+  return APIUtil.fetchAmazonItems(keywords).then((items) => {
+    return dispatch(receiveAmazonItems(items))
   })
 }
 

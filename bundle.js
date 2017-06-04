@@ -29566,7 +29566,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.clearError = exports.getYoutubeItems = exports.getEbayItems = exports.getLabels = exports.startLoadingImage = exports.startLoadingYoutube = exports.startLoadingEbay = exports.receiveImageError = exports.receiveImageLabels = exports.receiveYoutubeItems = exports.receiveEbayItems = exports.START_LOADING_YOUTUBE = exports.START_LOADING_IMAGE = exports.START_LOADING_EBAY = exports.RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_LABELS = exports.RECEIVE_YOUTUBE_ITEMS = exports.RECEIVE_EBAY_ITEMS = undefined;
+	exports.clearError = exports.getAmazonItems = exports.getYoutubeItems = exports.getEbayItems = exports.getLabels = exports.startLoadingImage = exports.startLoadingYoutube = exports.startLoadingEbay = exports.receiveImageError = exports.receiveImageLabels = exports.receiveAmazonItems = exports.receiveYoutubeItems = exports.receiveEbayItems = exports.START_LOADING_YOUTUBE = exports.START_LOADING_IMAGE = exports.START_LOADING_EBAY = exports.RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_LABELS = exports.RECEIVE_AMAZON_ITEMS = exports.RECEIVE_YOUTUBE_ITEMS = exports.RECEIVE_EBAY_ITEMS = undefined;
 	
 	var _item_api_util = __webpack_require__(273);
 	
@@ -29576,6 +29576,7 @@
 	
 	var RECEIVE_EBAY_ITEMS = exports.RECEIVE_EBAY_ITEMS = "RECEIVE_EBAY_ITEMS";
 	var RECEIVE_YOUTUBE_ITEMS = exports.RECEIVE_YOUTUBE_ITEMS = "RECEIVE_YOUTUBE_ITEMS";
+	var RECEIVE_AMAZON_ITEMS = exports.RECEIVE_AMAZON_ITEMS = "RECEIVE_AMAZON_ITEMS";
 	var RECEIVE_IMAGE_LABELS = exports.RECEIVE_IMAGE_LABELS = "RECEIVE_IMAGE_LABELS";
 	var RECEIVE_IMAGE_ERROR = exports.RECEIVE_IMAGE_ERROR = "RECEIVE_IMAGE_ERROR";
 	var START_LOADING_EBAY = exports.START_LOADING_EBAY = "START_LOADING_EBAY";
@@ -29592,6 +29593,13 @@
 	var receiveYoutubeItems = exports.receiveYoutubeItems = function receiveYoutubeItems(items) {
 	  return {
 	    type: RECEIVE_YOUTUBE_ITEMS,
+	    items: items
+	  };
+	};
+	
+	var receiveAmazonItems = exports.receiveAmazonItems = function receiveAmazonItems(items) {
+	  return {
+	    type: RECEIVE_AMAZON_ITEMS,
 	    items: items
 	  };
 	};
@@ -29660,6 +29668,14 @@
 	  };
 	};
 	
+	var getAmazonItems = exports.getAmazonItems = function getAmazonItems(keywords) {
+	  return function (dispatch) {
+	    return APIUtil.fetchAmazonItems(keywords).then(function (items) {
+	      return dispatch(receiveAmazonItems(items));
+	    });
+	  };
+	};
+	
 	var clearError = exports.clearError = function clearError() {
 	  return function (dispatch) {
 	    return dispatch(receiveImageError(""));
@@ -29694,6 +29710,69 @@
 	  });
 	};
 	
+	var buildAmazonRequest = function buildAmazonRequest(keywords) {
+	  function sha256(stringToSign, secretKey) {
+	    var hex = CryptoJS.HmacSHA256(stringToSign, secretKey);
+	    return hex.toString(CryptoJS.enc.Base64);
+	  }
+	
+	  function timestamp() {
+	    var date = new Date();
+	    var y = date.getUTCFullYear().toString();
+	    var m = (date.getUTCMonth() + 1).toString();
+	    var d = date.getUTCDate().toString();
+	    var h = date.getUTCHours().toString();
+	    var min = date.getUTCMinutes().toString();
+	    var s = date.getUTCSeconds().toString();
+	
+	    if (m.length < 2) {
+	      m = "0" + m;
+	    }
+	    if (d.length < 2) {
+	      d = "0" + d;
+	    }
+	    if (h.length < 2) {
+	      h = "0" + h;
+	    }
+	    if (min.length < 2) {
+	      min = "0" + min;
+	    }
+	    if (s.length < 2) {
+	      s = "0" + s;
+	    }
+	
+	    var date = y + "-" + m + "-" + d;
+	    var time = h + ":" + min + ":" + s;
+	    return date + "T" + time + "Z";
+	  }
+	
+	  function getAmazonItemInfo(keywords) {
+	    var PrivateKey = "Fpsee6LE955mwJeUR7tSGLkIhuBizpDUhdGtkHkO";
+	    var PublicKey = "AKIAJNFWNVA7ZV7YUENQ";
+	    var AssociateTag = "eaz09-20";
+	
+	    var parameters = [];
+	    parameters.push("AWSAccessKeyId=" + PublicKey);
+	    parameters.push("keywords=" + keywords);
+	    parameters.push("Operation=ItemLookup");
+	    parameters.push("Service=AWSECommerceService");
+	    parameters.push("Timestamp=" + encodeURIComponent(timestamp()));
+	    parameters.push("Version=2011-08-01");
+	    parameters.push("AssociateTag=" + AssociateTag);
+	
+	    parameters.sort();
+	    var paramString = parameters.join('&');
+	
+	    var signingKey = "GET\n" + "webservices.amazon.com\n" + "/onca/xml\n" + paramString;
+	
+	    var signature = sha256(signingKey, PrivateKey);
+	    signature = encodeURIComponent(signature);
+	
+	    var amazonUrl = "http://webservices.amazon.com/onca/xml?" + paramString + "&Signature=" + signature;
+	    console.log(amazonUrl);
+	  }
+	};
+	
 	var fetchLabel = exports.fetchLabel = function fetchLabel(image_url) {
 	  return $.ajax({
 	    method: 'POST',
@@ -29718,6 +29797,13 @@
 	  return $.ajax({
 	    method: 'GET',
 	    url: "https://www.googleapis.com/youtube/v3/search?part=snippet&q=" + key_words + "&type=video&maxResults=9&videoCaption=closedCaption&key=" + google_api_key
+	  });
+	};
+	
+	var fetchAmazonItems = exports.fetchAmazonItems = function fetchAmazonItems(keywords) {
+	  return $.ajax({
+	    method: 'GET',
+	    url: buildAmazonRequest(keywords)
 	  });
 	};
 
@@ -32470,6 +32556,9 @@
 	      return Object.assign({}, newState);
 	    case _item_actions.RECEIVE_EBAY_ITEMS:
 	      newState.ebayItems = action.items.findItemsByKeywordsResponse[0];
+	      return Object.assign({}, newState);
+	    case _item_actions.RECEIVE_AMAZON_ITEMS:
+	      debugger;
 	      return Object.assign({}, newState);
 	    case _item_actions.RECEIVE_YOUTUBE_ITEMS:
 	      newState.youtubeItems = action.items;
