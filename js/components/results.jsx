@@ -11,8 +11,7 @@ class Results extends React.Component {
     this.state ={
       labels: true,
       ebay: false,
-      youtube: false,
-      amazon: false
+      youtube: false
     }
     this.openTab = this.openTab.bind(this);
   }
@@ -35,12 +34,10 @@ class Results extends React.Component {
           <div className="tab-items"  onClick={()=>this.openTab("labels")}>labels</div>
           <div className="tab-items"  onClick={()=>this.openTab("ebay")}>ebay</div>
           <div className="tab-items"  onClick={()=>this.openTab("youtube")}>Youtube</div>
-          <div className="tab-items"  onClick={()=>this.openTab("amazon")}>Amazon</div>
         </div>
         {this.state.labels ? <LabelsContainer /> : ""}
         {this.state.ebay ? <EbayItemsContainer /> : ""}
         {this.state.youtube ? <YoutubeItemsContainer /> : ""}
-        {this.state.amazon ? <AmazonItemsContainer /> : ""}
     </div>
     );
   }

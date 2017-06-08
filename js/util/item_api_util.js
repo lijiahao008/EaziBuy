@@ -61,7 +61,7 @@ function getAmazonItemInfo(keywords) {
     parameters.push("Service=AWSECommerceService");
     parameters.push("Timestamp=" + encodeURIComponent(timestamp()));
     parameters.push("Version=2011-08-01");
-parameters.push("AssociateTag=" + AssociateTag);
+    parameters.push("AssociateTag=" + AssociateTag);
 
     parameters.sort();
     var paramString = parameters.join('&');

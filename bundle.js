@@ -29867,8 +29867,7 @@
 	    _this.state = {
 	      labels: true,
 	      ebay: false,
-	      youtube: false,
-	      amazon: false
+	      youtube: false
 	    };
 	    _this.openTab = _this.openTab.bind(_this);
 	    return _this;
@@ -29929,19 +29928,11 @@
 	                return _this2.openTab("youtube");
 	              } },
 	            'Youtube'
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'tab-items', onClick: function onClick() {
-	                return _this2.openTab("amazon");
-	              } },
-	            'Amazon'
 	          )
 	        ),
 	        this.state.labels ? _react2.default.createElement(_labels_container2.default, null) : "",
 	        this.state.ebay ? _react2.default.createElement(_ebay_items_container2.default, null) : "",
-	        this.state.youtube ? _react2.default.createElement(_youtube_container2.default, null) : "",
-	        this.state.amazon ? _react2.default.createElement(_amazon_container2.default, null) : ""
+	        this.state.youtube ? _react2.default.createElement(_youtube_container2.default, null) : ""
 	      );
 	    }
 	  }]);
