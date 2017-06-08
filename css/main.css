@@ -42,7 +42,11 @@ body {
 .initial-result {
   position: relative;
   top: 40%;
+  font-size: 25px;
+  font-weight: bold;
   text-align: center;
+  font-style: italic;
+  color: darkgray;
 }
 
 .label-error-container {
