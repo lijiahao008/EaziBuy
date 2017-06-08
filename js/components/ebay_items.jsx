@@ -39,7 +39,7 @@ class EbayItems extends React.Component {
                   <div className="card-title">{title}</div>
                   <div className="item-location"><span>Location: </span>{item.location[0]}</div>
                   <div className="item-condition"><span>Condition: </span>{condition}</div>
-                  <a className="btn btn-primary btn-block view-on-ebay" target="_blank" href={item.viewItemURL[0]}>View On Ebay</a>
+                  <a className="btn btn-primary btn-block view-on-ebay" target="_blank" href={item.viewItemURL[0]}>View</a>
               </div>
             </div>
           })}
