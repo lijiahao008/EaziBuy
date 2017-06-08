@@ -37,7 +37,7 @@ class YoutubeItems extends React.Component {
                 <div className="card-block">
                   <div className="card-title">{title}</div>
                   <div className="item-location"><span>Channel: </span>{item.snippet.channelTitle}</div>
-                  <a className="btn btn-danger btn-block view-on-ebay" target="_blank" href={"https://www.youtube.com/watch?v=" + item.id.videoId}>View On Youtube</a>
+                  <a className="btn btn-danger btn-block view-on-ebay" target="_blank" href={"https://www.youtube.com/watch?v=" + item.id.videoId}>View</a>
               </div>
             </div>
           })}
