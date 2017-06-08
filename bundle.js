@@ -29887,7 +29887,7 @@
 	      if (this.props.initialPage && this.props.error === "") {
 	        return _react2.default.createElement(
 	          'div',
-	          null,
+	          { className: 'initial-result' },
 	          'Select an image to show results.'
 	        );
 	      }

@@ -23,7 +23,7 @@ class Results extends React.Component {
 
   render () {
     if (this.props.initialPage && this.props.error === "") {
-      return <div>Select an image to show results.</div>;
+      return <div className="initial-result">Select an image to show results.</div>;
     }
     if (this.props.error !== "") {
       return <div className="label-error-container"><div className="label-error">{this.props.error}</div></div>
