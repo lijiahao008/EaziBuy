@@ -29,6 +29,13 @@ class Results extends React.Component {
       return <div className="label-error-container"><div className="label-error">{this.props.error}</div></div>
     }
     let labelsTab = "tab-items", ebayTab = "tab-items", youtubeTab = "tab-items";
+    if (this.state.labels) {
+      labelsTab += " selected";
+    } else if (this.state.ebay) {
+      ebayTab += " selected";
+    } else if (this.state.youtube) {
+      youtubeTab += " selected";
+    }
     return (
       <div>
         <div className="tabs">
