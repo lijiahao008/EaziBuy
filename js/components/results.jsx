@@ -28,12 +28,13 @@ class Results extends React.Component {
     if (this.props.error !== "") {
       return <div className="label-error-container"><div className="label-error">{this.props.error}</div></div>
     }
+    let labelsTab = "tab-items", ebayTab = "tab-items", youtubeTab = "tab-items";
     return (
       <div>
         <div className="tabs">
-          <div className="tab-items"  onClick={()=>this.openTab("labels")}>labels</div>
-          <div className="tab-items"  onClick={()=>this.openTab("ebay")}>ebay</div>
-          <div className="tab-items"  onClick={()=>this.openTab("youtube")}>Youtube</div>
+          <div className={labelsTab}  onClick={()=>this.openTab("labels")}>labels</div>
+          <div className={ebayTab}  onClick={()=>this.openTab("ebay")}>ebay</div>
+          <div className={youtubeTab}  onClick={()=>this.openTab("youtube")}>Youtube</div>
         </div>
         {this.state.labels ? <LabelsContainer /> : ""}
         {this.state.ebay ? <EbayItemsContainer /> : ""}
