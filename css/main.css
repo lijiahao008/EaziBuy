@@ -77,6 +77,10 @@ body {
   font-weight: bold;
 }
 
+.tab-items.selected {
+  background-color: red;
+}
+
 .tab-items:hover {
   cursor: pointer;
   text-decoration: underline;
