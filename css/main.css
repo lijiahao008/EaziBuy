@@ -78,7 +78,7 @@ body {
 }
 
 .tab-items.selected {
-  background-color: red;
+  background-color: cornsilk;
 }
 
 .tab-items:hover {
